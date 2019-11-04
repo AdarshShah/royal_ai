@@ -31,3 +31,31 @@ def do_gradient_descent():
             db += gradient_b(w,b,x,y)
         w = w - eta * dw
         b = b - eta * db
+
+def do_momentum_gradient_descent():
+    w, b, eta = init_w,init_b, 1.0
+    prev_v_w, prev_v_b, gamma = 0, 0, 0.9
+    for i in range(max_epochs):
+        dw, db = 0, 0
+        for x,y in zip(X,Y):
+            dw += gradient_w(w, b , x , y)
+            db += gradient_b(w, b , x , y)
+        v_w = gamma * prev_v_w + eta * dw
+        v_b = gamma * prev_v_b + eta * db
+        w = w - v_w
+        b = b - v_b
+        prev_v_w = v_w                    
+        prev_v_b = v_b
+
+def do_nesterov_gradient_descent():
+    w, b, eta = init_w, init_b, 1.0
+    prev_v_w, prev_v_b, gamma = 0, 0, 0.9
+    for i in range(max_epochs):
+        dw, db = 0, 0
+        v_w = gamma * prev_v_w
+        v_b = gamma * prev_v_b
+        for x,y in zip(X,Y):
+            dw += grad_w(w*v_w,b*v_b,x,y)
+            db += grad_b(w*v_b,b*v_b,x,y)
+        v_w = gamma * prev_v_w + eta * dw            
+        v_b = gamma * prev_v_b + eta * db
