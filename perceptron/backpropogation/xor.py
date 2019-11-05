@@ -33,28 +33,26 @@ class NeuralNetwork(object):
         d_error_a_1 = d_error_h_1 * self.h_1 * (1-self.h_1)
         
         self.d_error_W_2 = self.h_1.T.dot(d_error_a_2)
-        self.d_error_b_2 = np.sum(d_error_a_2,0)
+        self.d_error_b_2 = d_error_a_2
         
-        self.d_error_W_1 = np.zeros((2,2))
-        for i in input:
-            self.d_error_W_1 += np.array([i]).T.dot(np.sum(d_error_a_1,0))
-            print(np.array([i]).T.dot(np.sum(d_error_a_1,0)))
-        self.d_error_b_1 = np.sum(d_error_a_1,0)
-
+        self.d_error_W_1 = input.T.dot(d_error_a_1)
+        self.d_error_b_1 = d_error_a_1
 
     def train(self,iter,eta,input,output):
         for _ in range(iter):
-            self.feedforward(input)
-            self.backprop(input,output)
-            self.W_1-=eta*self.d_error_W_1
-            self.b_1-=eta*self.d_error_b_1
-            self.W_2-=eta*self.d_error_W_2
-            self.b_2-=eta*self.d_error_b_2
+            for i,o in zip(input,output):
+                self.feedforward(i)
+                self.backprop(np.array([i]),o)
+                self.W_1-=eta*self.d_error_W_1
+                self.b_1-=eta*self.d_error_b_1
+                self.W_2-=eta*self.d_error_W_2
+                self.b_2-=eta*self.d_error_b_2
             if _%100 == 0:
                 print(np.sum((self.h_2-output)*(self.h_2-output)))
 
 n = NeuralNetwork()
-n.train(1000,0.1,input,output)
-print(n.feedforward(input))
+n.train(1000,2,input,output)
+for i,o in zip(input,output):
+    print(n.feedforward(i))
 
 
