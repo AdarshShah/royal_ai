@@ -54,6 +54,7 @@ class NeuralNetwork(object):
                 print(np.sum((self.h_2-output)*(self.h_2-output)))
 
 n = NeuralNetwork()
-n.backprop(input,output)
+n.train(1000,0.1,input,output)
+print(n.feedforward(input))
 
 
