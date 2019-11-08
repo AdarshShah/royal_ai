@@ -44,6 +44,10 @@ class NeuralNetwork(object):
         self.b1 -= eta*d_error_b1
         self.W2 -= eta*d_error_W2
         self.b2 -= eta*d_error_b2
+
+    def lossfunc(self,input,output):
+        return np.sum((self.feedforward(input)-output)**2)
+
         
 
 input = np.array([[0,0],[0,1],[1,0],[1,1]])
@@ -51,11 +55,15 @@ output = np.array([[0],[1],[1],[0]])
 n = NeuralNetwork(2,2,1)
 for i in range(1000):
     n.backprop(input,output,1)
-print(n.feedforward(input))       
+    if i%50 == 0:
+        print(n.lossfunc(input,output))
+print(np.round(n.feedforward(input)))
 
 input = np.array([[0,0,0],[0,0,1],[0,1,0],[0,1,1],[1,0,0],[1,0,1],[1,1,0],[1,1,1]])
 output = np.array([[0],[1],[1],[0],[1],[0],[0],[1]])
 n = NeuralNetwork(3,4,1)
 for i in range(2000):
     n.backprop(input,output,1)
-print(n.feedforward(input))       
+    if i%100 == 0:
+        print(n.lossfunc(input,output))
+print(np.round(n.feedforward(input)))
