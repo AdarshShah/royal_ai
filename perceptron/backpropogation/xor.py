@@ -46,6 +46,8 @@ class NeuralNetwork(object):
         self.b2 -= eta*d_error_b2
         
 
+input = np.array([[0,0],[0,1],[1,0],[1,1]])
+output = np.array([[0],[1],[1],[0]])        
 n = NeuralNetwork(2,2,1)
 for i in range(1000):
     n.backprop(input,output,1)
